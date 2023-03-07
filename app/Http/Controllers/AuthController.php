@@ -40,10 +40,12 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
-            $token = $user->createToken($user->email . '_Token')->plainTextToken;
+            // $token = $user->createToken($user->email . '_Token')->plainTextToken;
+            $token = $user->createToken($user->email)->plainTextToken;
             $response = [
                 'suceess' => true,
-                'username' => $user->name,
+                'user_id' => $user->id,
+                'email' => $user->email,
                 'token' => $token,
                 'message' => 'register Successfully',
             ];
@@ -75,12 +77,14 @@ class AuthController extends Controller
             ];
             return response()->json($response, Response::HTTP_UNPROCESSABLE_ENTITY);
         } else {
-            $token = $user->createToken($user->email . '_Token')->plainTextToken;
+            // $token = $user->createToken($user->email . '_Token')->plainTextToken;
+            $token = $user->createToken($user->email)->plainTextToken;
             $response = [
                 'suceess' => true,
                 'messages' => 'Login Succesfully',
+                'user_id' => $user->id,
                 'token' => $token,
-                'username' => $user->name,
+                'email' => $user->email,
             ];
             return response()->json($response, Response::HTTP_OK);
         }
@@ -89,10 +93,14 @@ class AuthController extends Controller
     /**
      * Display the specified resource.
      */
-    public function logout(string $id)
+    public function logout(Request $request)
     {
+        $user = User::where('email', $request->email)->first();
         //
-        auth()->user()->tokens()->delete();
+        $user->tokens()->delete();
+        // $request->user()->currentAccessToken()->delete();
+   
+        // $user->tokens()->where('token',$request->token)->delete();
         $response = [
             'suceess' => true,
             'messages' => 'Logot Succesfully',
