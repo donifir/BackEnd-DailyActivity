@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FriendResource;
 use App\Http\Resources\PengingatResource;
+use App\Models\Friend;
 use App\Models\Pengingat;
 use App\Models\PengingatUserModel;
 use App\Models\User;
@@ -19,7 +21,7 @@ class PengingatController extends Controller
     public function index(string $id)
     {
         //
-        $pengingat = Pengingat::where('user_id',$id)->get();
+        $pengingat = Pengingat::where('user_id', $id)->get();
         $response = [
             'success' => 'true',
             'message' => 'list semua pengingat',
@@ -31,8 +33,11 @@ class PengingatController extends Controller
     public function pengingatList(string $id)
     {
         //
-        $user=User::find($id);
+        $user = User::find($id);
         $pengingat = $user->pengingats()->get();
+        // if ($id) {
+
+        // }
         $response = [
             'success' => 'true',
             'message' => 'list semua pengingat',
@@ -41,7 +46,42 @@ class PengingatController extends Controller
         return response()->json($response, Response::HTTP_OK);
     }
 
-    /**
+    // public function listUserPengingat(string $pengingat_id)
+    public function listUserPengingat(string $pengingat_id)
+    {
+
+        // $pengingat = Pengingat::find($pengingat_id)->users()->get();
+        $pengingat = Pengingat::find($pengingat_id)->users()->get();
+
+        $response = [
+            'success' => 'true',
+            'list_id_user' => 'list semua pengingat',
+            'data' => $pengingat
+        ];
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    public function daftarUserPengingat(string $pengingat_id, string $auth_id)
+    {
+
+        $pengingat = Pengingat::find($pengingat_id)->users()->get();
+
+        $dataBefore = Friend::where('auth_id', $auth_id);
+        foreach ($pengingat as $data) {
+            $dataBefore->where('user_id', '<>',  $data->id);
+        }
+        $dataAfter = $dataBefore->get();
+
+        $response = [
+            'success' => 'true',
+            'list_id_user' => 'list semua pengingat',
+            'data' => FriendResource::collection($dataAfter)
+            // 'data' =>  $jadi
+        ];
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    /**daftarUserPengingat
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -64,10 +104,10 @@ class PengingatController extends Controller
                 'keterangan_pengingat' => $request->keterangan_pengingat
             ]);
 
-            $pengingatId = Pengingat::orderBy('id','desc')->first();
+            $pengingatId = Pengingat::orderBy('id', 'desc')->first();
             PengingatUserModel::create([
-                'user_id'=>$request->user_id,
-                'pengingat_id'=>$pengingatId->id
+                'user_id' => $request->user_id,
+                'pengingat_id' => $pengingatId->id
             ]);
 
             $response = [
@@ -97,15 +137,32 @@ class PengingatController extends Controller
             ];
             return response()->json($response, Response::HTTP_UNPROCESSABLE_ENTITY);
         } else {
-            $pengingat=Pengingat::find($edit_pengingat);
+
+            if ($request->remove_id_item) {
+                PengingatUserModel::where('pengingat_id', $edit_pengingat)->where('user_id', $request->remove_id_item)->delete();
+                // foreach ($request->remove_id_item as $data) {
+                // PengingatUserModel::where('pengingat_id', $edit_pengingat)->where('user_id', $data)->delete();
+                // }
+            }
+            if ($request->datalistuser) {
+                $dataUser = User::where('email', $request->datalistuser)->first();
+                PengingatUserModel::create([
+                    'user_id' => $dataUser->id,
+                    'pengingat_id' => $edit_pengingat
+                ]);
+                // foreach ($request->datalistuser as $data) {
+
+                // }
+            }
+            $pengingat = Pengingat::find($edit_pengingat);
             $pengingat->update([
                 'nama_pengingat' => $request->nama_pengingat,
                 'keterangan_pengingat' => $request->keterangan_pengingat
             ]);
-            
+
             $response = [
                 'success' => 'false',
-                'message' => 'data updated',
+                'message' => 'datassss',
                 'data' => $pengingat,
             ];
             return response()->json($response, Response::HTTP_OK);

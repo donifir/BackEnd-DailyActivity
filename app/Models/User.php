@@ -48,15 +48,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Pengingat::class);
     }
 
-    public function friends1() {
-        return $this->belongsToMany(User::class, 'friends_users', 'uid1');
-    }
-
-    public function friends2() {
-        return $this->belongsToMany(User::class, 'friends_users', 'uid2');
-    }
-
-    // public function getFriendsAttribute() {
-    //     return $this->friends1->merge($this->friends2);
+    // public function friends()
+    // {
+    //     return $this->belongsToMany(Friend::class);
     // }
+
+
 }

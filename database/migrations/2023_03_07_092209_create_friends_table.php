@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('uid');
+            $table->foreignId('auth_id');
             $table->foreignId('user_id');
-            $table->boolean('confirm')->nullable();
+            $table->integer('accepted')->default(0);
             $table->timestamps();
         });
     }

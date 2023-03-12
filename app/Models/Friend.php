@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Friend extends Model
 {
     use HasFactory;
-    Protected $guarded=[];
+    protected $guarded=[];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
 }

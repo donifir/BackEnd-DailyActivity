@@ -30,6 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('list-pengingat', [PengingatController::class, 'index']);
+    // Route::get('listUserPengingat/{pengingat_id}', [PengingatController::class, 'listUserPengingat']);
+    Route::get('listUserPengingat/{pengingat_id}', [PengingatController::class, 'listUserPengingat']);
+    Route::get('daftarUserPengingat/{pengingat_id}/{auth_id}', [PengingatController::class, 'daftarUserPengingat']);
     Route::get('pengingat-list/{id}', [PengingatController::class, 'pengingatList']);
     Route::post('create-pengingat', [PengingatController::class, 'store']);
     Route::post('edit-pengingat/{pengingat_id}', [PengingatController::class, 'update']);
@@ -42,7 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('update-ceklis-kegiatan/{id}', [DetailPengingat::class, 'updateCeklist']);
     Route::post('delete-kegiatan/{id}', [DetailPengingat::class, 'destroy']);
 
-    Route::get('list-friends/{id}', [FriendController::class, 'index']);
-    Route::post('add-friends/{id}', [FriendController::class, 'addFreiend']);
+    Route::get('list-friends/{auth_id}', [FriendController::class, 'index']);
+    Route::post('add-friends/{authId}', [FriendController::class, 'addFreiend']);
     Route::post('delete-friends/{id}', [FriendController::class, 'destroy']);
 });
