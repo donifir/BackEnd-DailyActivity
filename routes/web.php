@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('verifikasi/{link}', [AuthController::class, 'verifikasiview']);
+Route::get('verifikasi-akun/link', [AuthController::class, 'verifikasiakun']);
+Route::get('verifikasi-akun/{email}', [AuthController::class, 'verifikasiakun']);
+Route::get('reset-password/{email}/{link}', [AuthController::class, 'cekResetPassword']);
+Route::post('store/reset-password/{email}', [AuthController::class, 'storeResetPassword']);
+Route::post('store/reset-password/{email}', [AuthController::class, 'storeResetPassword']);
+Route::get('selesai', [AuthController::class, 'storeResetPassword']);

@@ -17,7 +17,11 @@ class PengingatResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'nama_pengingat' => $this->pengingat->nama_pengingat,
+            'nama_pengingat' => $this->nama_pengingat,
+            'keterangan_pengingat' => $this->keterangan_pengingat,
+            'mulai_pengingat' => $this->mulai_pengingat,
+            'selesai_pengingat' => $this->selesai_pengingat,
+            'list_user' => $this->users,
             // 'keterangan_pengingat' => $this->email,
 
         ];

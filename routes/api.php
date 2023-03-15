@@ -24,11 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('reset-password', [AuthController::class, 'passwordReset']);
+// Route::post('reset-password', [AuthController::class, 'passwordReset']);
+
+Route::post('ceklogin/{email}', [AuthController::class, 'cekLogin']);
+Route::get('reset-password/{email}', [AuthController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
-
+    Route::get('verifikasi-akun/{email}', [AuthController::class, 'verifikasiakun']);
+    Route::post('update-password', [AuthController::class, 'passwordUpdate']);
     Route::get('list-pengingat', [PengingatController::class, 'index']);
     // Route::get('listUserPengingat/{pengingat_id}', [PengingatController::class, 'listUserPengingat']);
     Route::get('listUserPengingat/{pengingat_id}', [PengingatController::class, 'listUserPengingat']);

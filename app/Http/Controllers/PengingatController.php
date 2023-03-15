@@ -25,7 +25,7 @@ class PengingatController extends Controller
         $response = [
             'success' => 'true',
             'message' => 'list semua pengingat',
-            'data' => $pengingat,
+            'data' => PengingatResource::collection($pengingat),
         ];
         return response()->json($response, Response::HTTP_OK);
     }
@@ -41,7 +41,9 @@ class PengingatController extends Controller
         $response = [
             'success' => 'true',
             'message' => 'list semua pengingat',
-            'data' => $pengingat
+            // 'data' => $pengingat
+            'data' => PengingatResource::collection($pengingat),
+
         ];
         return response()->json($response, Response::HTTP_OK);
     }
@@ -113,7 +115,8 @@ class PengingatController extends Controller
             $response = [
                 'success' => 'false',
                 'message' => 'data created',
-                'data' => $pengingat,
+                // 'data' => $pengingat,
+                'data' => new PengingatResource($pengingat),
             ];
             return response()->json($response, Response::HTTP_OK);
         }
@@ -163,7 +166,9 @@ class PengingatController extends Controller
             $response = [
                 'success' => 'false',
                 'message' => 'datassss',
-                'data' => $pengingat,
+                // 'data' => $pengingat,
+                'data' => new PengingatResource($pengingat),
+
             ];
             return response()->json($response, Response::HTTP_OK);
         }

@@ -70,23 +70,15 @@ class FriendController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, string $id)
+    public function destroy( string $id)
     {
         //
-        $user = User::where('email', $request->email)->first();
-        $friend = Friend::where('uid', $id)->where('user_id', $user->id)->first();
-
-        if ($user && $friend) {
-            Friend::find($friend->id)->delete();
-            $response = [
-                'success' => 'berhasil dihapus',
-            ];
-            return response()->json($response, Response::HTTP_OK);
-        } else {
-            $response = [
-                'success' => 'error ',
-            ];
-            return response()->json($response, Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        Friend::find($id)->delete();
+        $response = ([
+            'success' => true,
+            'message' => 'sudah menjadi teman',
+            'data' => null
+        ]);
+        return response()->json($response, Response::HTTP_OK);
     }
 }
